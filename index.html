@@ -4,149 +4,149 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Fluxograma — Triagem (Vencido/Avariado) | Martree</title>
-  <meta name="description" content="Fluxograma profissional com zoom/pan e linhas automáticas." />
   <link rel="stylesheet" href="style.css" />
-  <script src="app.js" defer></script>
 </head>
-
 <body>
   <header class="top">
     <div class="brand">
-      <div class="logo" aria-hidden="true">M</div>
-      <div class="brandTxt">
+      <div class="logo">M</div>
+      <div>
         <h1>Fluxograma — Triagem (Vencido/Avariado)</h1>
-        <p class="muted">Padrão interno • Martree • Recuperação • Perda • Troca</p>
+        <p class="muted">Padrão interno • Martree</p>
       </div>
     </div>
 
     <div class="actions">
-      <button class="btn" id="btnFit" title="Ajustar para caber na tela">Fit</button>
-      <button class="btn" id="btnReset" title="Resetar zoom e posição">Reset</button>
-      <button class="btn" id="btnZoomOut" title="Diminuir zoom">−</button>
-      <button class="btn" id="btnZoomIn" title="Aumentar zoom">+</button>
-      <span class="sep" aria-hidden="true"></span>
-      <button class="btn" id="btnExport" title="Exportar PNG">Exportar PNG</button>
-      <button class="btn" id="btnPrint" title="Imprimir">Imprimir</button>
+      <button class="btn" onclick="window.print()">Imprimir</button>
     </div>
   </header>
 
-  <main class="layout">
-    <section class="panel flowPanel">
+  <main class="wrap">
+    <section class="panel">
       <div class="panelHead">
         <h2>Processo</h2>
-        <div class="hint">
-          <span class="kbd">Scroll</span> zoom • <span class="kbd">Arrastar</span> mover • <span class="kbd">Duplo clique</span> fit
-        </div>
+        <p class="muted small">Layout estável (sem sobreposição). Funciona direto no GitHub Pages.</p>
       </div>
 
-      <div class="stage" id="stage">
-        <div class="viewport" id="viewport">
-          <svg class="wires" id="wires" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"></svg>
+      <!-- GRID DO FLUXO -->
+      <div class="flow">
 
-          <div class="canvas" id="canvas">
-            <!-- Coluna esquerda -->
-            <div class="node start" id="n_inicio" data-x="120" data-y="40">
-              <div class="title">INÍCIO</div>
+        <!-- COLUNA 1 (principal) -->
+        <div class="col">
+          <div class="node start">INÍCIO</div>
+          <div class="arrow down"></div>
+
+          <div class="node">
+            <div class="t">Produto sai da loja</div>
+            <div class="s">e vai para área da triagem</div>
+          </div>
+          <div class="arrow down"></div>
+
+          <div class="node">
+            <div class="t">Realizar a triagem</div>
+            <div class="s">e conferir se realmente o produto está vencido e/ou avariado</div>
+          </div>
+          <div class="arrow down"></div>
+
+          <div class="node diamond">
+            <div class="t center">Produto é recuperável?</div>
+          </div>
+
+          <!-- bifurcação -->
+          <div class="split">
+            <!-- SIM -->
+            <div class="branch">
+              <div class="tag ok">SIM</div>
+              <div class="arrow down ok"></div>
+              <div class="node ok"><div class="t">Recuperar produto</div></div>
+              <div class="arrow down ok"></div>
+              <div class="node ok"><div class="t">Devolver para loja</div></div>
+              <div class="arrow down ok"></div>
+              <div class="node end">FIM</div>
             </div>
 
-            <div class="node step" id="n_saida" data-x="70" data-y="130">
-              <div class="title">Produto sai da loja</div>
-              <div class="sub">e vai para área da triagem</div>
-            </div>
+            <!-- NÃO -->
+            <div class="branch">
+              <div class="tag">NÃO</div>
+              <div class="arrow down"></div>
+              <div class="node"><div class="t">Lançamento no sistema</div></div>
+              <div class="arrow down"></div>
 
-            <div class="node step" id="n_triagem" data-x="55" data-y="250">
-              <div class="title">Realizar a triagem</div>
-              <div class="sub">e conferir se realmente o produto está<br/>vencido e/ou avariado</div>
-            </div>
+              <div class="node diamond">
+                <div class="t center">Tem troca?</div>
+              </div>
 
-            <div class="node decision" id="n_rec" data-x="105" data-y="390">
-              <div class="title">Produto é<br/>recuperável?</div>
-            </div>
+              <div class="split2">
+                <!-- NÃO -->
+                <div class="branch">
+                  <div class="tag bad">NÃO</div>
+                  <div class="arrow down bad"></div>
+                  <div class="node bad">
+                    <div class="t">Centro de custo:</div>
+                    <div class="s strong">PERDA LIXO</div>
+                  </div>
+                  <div class="arrow down bad"></div>
+                  <div class="node bad"><div class="t">Descartar produto</div></div>
+                  <div class="arrow down bad"></div>
+                  <div class="node end">FIM</div>
+                </div>
 
-            <!-- Ramo SIM -->
-            <div class="node step ok" id="n_recuperar" data-x="25" data-y="510">
-              <div class="title">Recuperar produto</div>
-            </div>
+                <!-- SIM -->
+                <div class="branch">
+                  <div class="tag warn">SIM</div>
+                  <div class="arrow down warn"></div>
 
-            <div class="node step ok" id="n_devolver" data-x="25" data-y="610">
-              <div class="title">Devolver para loja</div>
-            </div>
+                  <div class="node diamond">
+                    <div class="t center">Produto vencido<br/>ou avariado?</div>
+                  </div>
 
-            <div class="node end" id="n_fim1" data-x="85" data-y="705">
-              <div class="title">FIM</div>
-            </div>
+                  <div class="split3">
+                    <div class="branch">
+                      <div class="tag warn">VENCIDO</div>
+                      <div class="arrow down warn"></div>
+                      <div class="node warn">
+                        <div class="t">Centro de custo:</div>
+                        <div class="s strong">TROCA VENCIDO</div>
+                      </div>
+                    </div>
 
-            <!-- Ramo NÃO -->
-            <div class="node step" id="n_lanc" data-x="350" data-y="510">
-              <div class="title">Lançamento no sistema</div>
-            </div>
+                    <div class="branch">
+                      <div class="tag warn">AVARIADO</div>
+                      <div class="arrow down warn"></div>
+                      <div class="node warn">
+                        <div class="t">Centro de custo:</div>
+                        <div class="s strong">TROCA AVARIADO</div>
+                      </div>
+                    </div>
+                  </div>
 
-            <div class="node decision" id="n_troca" data-x="400" data-y="630">
-              <div class="title">Tem<br/>troca?</div>
-            </div>
-
-            <!-- NÃO tem troca -->
-            <div class="node step bad" id="n_cc_lixo" data-x="340" data-y="790">
-              <div class="title">Centro de custo:</div>
-              <div class="sub strong">PERDA LIXO</div>
-            </div>
-
-            <div class="node step bad" id="n_descartar" data-x="340" data-y="895">
-              <div class="title">Descartar produto</div>
-            </div>
-
-            <div class="node end" id="n_fim2" data-x="415" data-y="990">
-              <div class="title">FIM</div>
-            </div>
-
-            <!-- SIM tem troca -->
-            <div class="node decision" id="n_tipo" data-x="720" data-y="600">
-              <div class="title">Produto vencido<br/>ou avariado?</div>
-            </div>
-
-            <div class="node step warn" id="n_cc_venc" data-x="640" data-y="770">
-              <div class="title">Centro de custo:</div>
-              <div class="sub strong">TROCA VENCIDO</div>
-            </div>
-
-            <div class="node step warn" id="n_cc_ava" data-x="890" data-y="770">
-              <div class="title">Centro de custo:</div>
-              <div class="sub strong">TROCA AVARIADO</div>
-            </div>
-
-            <div class="node step warn" id="n_dir" data-x="770" data-y="900">
-              <div class="title">Direcionar para troca</div>
-            </div>
-
-            <div class="node end" id="n_fim3" data-x="820" data-y="1000">
-              <div class="title">FIM</div>
-            </div>
-
-            <div class="noteBox" id="n_note" data-x="40" data-y="840">
-              <div class="noteTitle">Obs.</div>
-              <div class="noteTxt">
-                Destinos finais: <b>Recuperação</b>, <b>Perda (lixo)</b> ou <b>Troca</b>.
+                  <div class="arrow down warn"></div>
+                  <div class="node warn"><div class="t">Direcionar para troca</div></div>
+                  <div class="arrow down warn"></div>
+                  <div class="node end">FIM</div>
+                </div>
               </div>
             </div>
+          </div>
+        </div>
 
-          </div><!-- /canvas -->
-        </div><!-- /viewport -->
+      </div><!-- /flow -->
+
+      <div class="note">
+        <b>Obs.:</b> Destinos finais: <b>Recuperação</b>, <b>Perda (lixo)</b> ou <b>Troca</b>.
       </div>
     </section>
 
     <aside class="panel side">
       <div class="panelHead">
         <h2>Legenda</h2>
-        <div class="hint">Padrão interno</div>
       </div>
 
-      <div class="sideBody">
-        <div class="legend">
-          <div class="legItem"><span class="dot info"></span><div><b>Etapas</b><p>Movimentação e conferência.</p></div></div>
-          <div class="legItem"><span class="dot ok"></span><div><b>Recuperável</b><p>Recupera e volta para loja.</p></div></div>
-          <div class="legItem"><span class="dot warn"></span><div><b>Troca</b><p>Segue para troca (vencido/avariado).</p></div></div>
-          <div class="legItem"><span class="dot bad"></span><div><b>Perda/Lixo</b><p>Sem troca: “PERDA LIXO” e descarta.</p></div></div>
-        </div>
+      <div class="legend">
+        <div class="leg"><span class="dot"></span><div><b>Etapas</b><p>Movimentação e conferência.</p></div></div>
+        <div class="leg"><span class="dot ok"></span><div><b>Recuperável</b><p>Recupera e devolve.</p></div></div>
+        <div class="leg"><span class="dot warn"></span><div><b>Troca</b><p>Troca vencido/avariado.</p></div></div>
+        <div class="leg"><span class="dot bad"></span><div><b>Perda/Lixo</b><p>Sem troca: perda e descarte.</p></div></div>
       </div>
     </aside>
   </main>

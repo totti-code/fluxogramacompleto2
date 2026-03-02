@@ -125,8 +125,8 @@ body{
 .canvas{
   position:absolute;
   left:0; top:0;
-  width: 1200px; /* canvas lógico */
-  height: 1120px;
+  width: 1400px; /* canvas lógico */
+  height: 1200px;
 }
 
 /* Wires svg */

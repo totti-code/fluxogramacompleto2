@@ -6,6 +6,7 @@
   <title>Fluxograma — Triagem (Vencido/Avariado) | Martree</title>
   <meta name="description" content="Fluxograma profissional com zoom/pan e linhas automáticas." />
   <link rel="stylesheet" href="style.css" />
+  <script src="app.js" defer></script>
 </head>
 
 <body>
@@ -38,12 +39,10 @@
         </div>
       </div>
 
-      <div class="stage" id="stage" aria-label="Área do fluxograma (zoom/pan)">
-        <!-- viewport recebe translate+scale -->
+      <div class="stage" id="stage">
         <div class="viewport" id="viewport">
           <svg class="wires" id="wires" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"></svg>
 
-          <!-- CANVAS com tamanho grande (não corta); você navega com pan/zoom -->
           <div class="canvas" id="canvas">
             <!-- Coluna esquerda -->
             <div class="node start" id="n_inicio" data-x="120" data-y="40">
@@ -65,8 +64,6 @@
             </div>
 
             <!-- Ramo SIM -->
-            <div class="label" id="l_sim1" data-x="35" data-y="452">SIM</div>
-
             <div class="node step ok" id="n_recuperar" data-x="25" data-y="510">
               <div class="title">Recuperar produto</div>
             </div>
@@ -80,8 +77,6 @@
             </div>
 
             <!-- Ramo NÃO -->
-            <div class="label" id="l_nao1" data-x="300" data-y="452">NÃO</div>
-
             <div class="node step" id="n_lanc" data-x="350" data-y="510">
               <div class="title">Lançamento no sistema</div>
             </div>
@@ -91,8 +86,6 @@
             </div>
 
             <!-- NÃO tem troca -->
-            <div class="label" id="l_nao2" data-x="445" data-y="750">NÃO</div>
-
             <div class="node step bad" id="n_cc_lixo" data-x="340" data-y="790">
               <div class="title">Centro de custo:</div>
               <div class="sub strong">PERDA LIXO</div>
@@ -107,14 +100,9 @@
             </div>
 
             <!-- SIM tem troca -->
-            <div class="label" id="l_sim2" data-x="635" data-y="650">SIM</div>
-
             <div class="node decision" id="n_tipo" data-x="720" data-y="600">
               <div class="title">Produto vencido<br/>ou avariado?</div>
             </div>
-
-            <div class="label" id="l_venc" data-x="690" data-y="735">VENCIDO</div>
-            <div class="label" id="l_ava" data-x="925" data-y="675">AVARIADO</div>
 
             <div class="node step warn" id="n_cc_venc" data-x="640" data-y="770">
               <div class="title">Centro de custo:</div>
@@ -134,12 +122,10 @@
               <div class="title">FIM</div>
             </div>
 
-            <!-- Notinha -->
             <div class="noteBox" id="n_note" data-x="40" data-y="840">
               <div class="noteTitle">Obs.</div>
               <div class="noteTxt">
                 Destinos finais: <b>Recuperação</b>, <b>Perda (lixo)</b> ou <b>Troca</b>.
-                (Você pode editar os textos sem mexer em linhas.)
               </div>
             </div>
 
@@ -156,47 +142,13 @@
 
       <div class="sideBody">
         <div class="legend">
-          <div class="legItem">
-            <span class="dot info"></span>
-            <div>
-              <b>Etapas</b>
-              <p>Movimentação e conferência (saída → triagem → lançamento).</p>
-            </div>
-          </div>
-
-          <div class="legItem">
-            <span class="dot ok"></span>
-            <div>
-              <b>Recuperável</b>
-              <p>Produto ajustado/recuperado e retorna para a loja.</p>
-            </div>
-          </div>
-
-          <div class="legItem">
-            <span class="dot warn"></span>
-            <div>
-              <b>Troca</b>
-              <p>Segue para troca, com centro de custo conforme motivo.</p>
-            </div>
-          </div>
-
-          <div class="legItem">
-            <span class="dot bad"></span>
-            <div>
-              <b>Perda/Lixo</b>
-              <p>Sem troca: lançar “PERDA LIXO” e descartar.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="box">
-          <b>Dica rápida</b>
-          <p>Se quiser “cabendo sem rolagem”, eu compacto as posições (data-x/data-y) e fontes.</p>
+          <div class="legItem"><span class="dot info"></span><div><b>Etapas</b><p>Movimentação e conferência.</p></div></div>
+          <div class="legItem"><span class="dot ok"></span><div><b>Recuperável</b><p>Recupera e volta para loja.</p></div></div>
+          <div class="legItem"><span class="dot warn"></span><div><b>Troca</b><p>Segue para troca (vencido/avariado).</p></div></div>
+          <div class="legItem"><span class="dot bad"></span><div><b>Perda/Lixo</b><p>Sem troca: “PERDA LIXO” e descarta.</p></div></div>
         </div>
       </div>
     </aside>
   </main>
-
-  <script src="app.js"></script>
 </body>
 </html>
